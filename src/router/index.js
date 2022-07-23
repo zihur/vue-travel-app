@@ -13,6 +13,19 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("@/views/Login.vue"),
+    beforeEnter(to, from) {
+      if (window.user) {
+        router.push({ name: "protected" });
+      }
+    },
+  },
+  {
+    path: "/invoices",
+    name: "invoices",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("@/views/Invoices.vue"),
   },
   {
     path: "/destination/:id/:slug",
@@ -58,7 +71,7 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   if (to.meta.requiresAuth && !window.user) {
-    return {name: 'login'}
+    return { name: "login", query: to.query };
   }
 });
 

@@ -1,12 +1,14 @@
 <script setup>
 import router from "@/router";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 
 const username = ref("");
 const password = ref("");
+const route = useRoute();
 const login = () => {
   window.user = username.value;
-  router.push({ name: "protected" });
+  router.push({ name: (route.query.redirect || 'protected') });
 };
 </script>
 <template>
